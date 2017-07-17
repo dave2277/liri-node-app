@@ -1,0 +1,24 @@
+{
+  "name": "liriapp",
+  "version": "1.0.0",
+  "description": "Package File for the liri app assignment",
+  "main": "n",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dogray7722/liri-node-app.git"
+  },
+  "author": "David Gray",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dogray7722/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/dogray7722/liri-node-app#readme",
+  "dependencies": {
+    "node-spotify-api": "^1.0.5",
+    "request": "^2.81.0",
+    "twitter": "^1.7.1"
+  }
+}
