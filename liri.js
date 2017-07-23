@@ -6,6 +6,7 @@ var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
 var request = require('request');
 
+
 //Provide authentication credentials for twitter
 var client = new Twitter({
     consumer_key: keys.twitterKeys.consumer_key,
@@ -48,7 +49,6 @@ var getSong = function () {
             return console.log('Error occurred: ' + err);
         }
 
-        // console.log(data);
         console.log("Artist(s) Name: " + data.tracks.items[0].album.artists[0].name);
         console.log("Song Title: " + data.tracks.items[0].name);
         console.log("Preview URL: " + data.tracks.items[0].preview_url);
@@ -57,25 +57,50 @@ var getSong = function () {
 
 };
 
+//Create function to get movies from the OMDB node application
+var getMovie = function () {
+    var movie = input[3];
 
+    const options = {
+        url: 'http://www.omdbapi.com/?apikey=40e9cece&t=' + movie + '&tomatoes=true',
+        method: 'GET'
+    };
 
-if (command == "my-tweets") {
-    getTweets();
-}
+    request(options, function(err, res, body) {
+        let json = JSON.parse(body);
+        // console.log(json);
+        console.log("* " + json.Title);
+        console.log("* " + json.Year);
+        console.log("* " + json.imdbRating);
+        console.log("* " + json.Country);
+        console.log("* " + json.Language);
+        console.log("* " + json.Plot);
+        console.log("* " + json.Actors);
+        console.log("* " + json.tomatoURL);
+    });
 
-else if (command == "spotify-this-song") {
-    getSong();
+};
 
-}
+    //Perform the appropriate search based on which proc.argv command is passed
 
-else if (command == "movie-this") {
+        if (command == "my-tweets") {
+            getTweets();
+        }
 
-}
+        else if (command == "spotify-this-song") {
+            getSong();
 
-else if (command == "do-what-it-says") {
+        }
 
-}
+        else if (command == "movie-this") {
+            getMovie();
 
-else {
-    console.log("Invalid command.")
-}
+        }
+
+        else if (command == "do-what-it-says") {
+
+        }
+
+        else {
+            console.log("Invalid command.")
+        }
