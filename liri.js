@@ -1,10 +1,11 @@
 
 //Define the modules
-
 var keys = require('./keys');
 var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
 var request = require('request');
+var fs = require('fs');
+
 
 
 //Provide authentication credentials for twitter
@@ -42,7 +43,10 @@ var getTweets = function() {
 
 //Create the function to get the songs
 var getSong = function () {
-    var song = input[3];
+    song = input[3];
+    if (!song){
+        song = "The Sign";
+    }
 
     spotify.search({type: 'track', query: song, limit: 1}, function (err, data) {
         if (err) {
@@ -61,27 +65,54 @@ var getSong = function () {
 var getMovie = function () {
     var movie = input[3];
 
-    const options = {
-        url: 'http://www.omdbapi.com/?apikey=40e9cece&t=' + movie + '&tomatoes=true',
-        method: 'GET'
-    };
+    if (movie === undefined) {
 
-    request(options, function(err, res, body) {
-        let json = JSON.parse(body);
-        // console.log(json);
-        console.log("* " + json.Title);
-        console.log("* " + json.Year);
-        console.log("* " + json.imdbRating);
-        console.log("* " + json.Country);
-        console.log("* " + json.Language);
-        console.log("* " + json.Plot);
-        console.log("* " + json.Actors);
-        console.log("* " + json.tomatoURL);
-    });
+        var options = {
+            url: 'http://www.omdbapi.com/?apikey=40e9cece&t=Mr.+Nobody&tomatoes=true',
+            method: 'GET'
+        };
+
+    } else {
+
+        options = {
+            url: 'http://www.omdbapi.com/?apikey=40e9cece&t=' + movie + '&tomatoes=true',
+            method: 'GET'
+        };
+
+    }
+
+        request(options, function (err, res, body) {
+            let json = JSON.parse(body);
+            // console.log(json);
+            console.log("* " + json.Title);
+            console.log("* " + json.Year);
+            console.log("* " + json.imdbRating);
+            console.log("* " + json.Country);
+            console.log("* " + json.Language);
+            console.log("* " + json.Plot);
+            console.log("* " + json.Actors);
+            console.log("* " + json.tomatoURL);
+        });
 
 };
 
-    //Perform the appropriate search based on which proc.argv command is passed
+//Create the do-what-it-says function
+var thatWay = function () {
+
+    fs.readFile('random.txt', 'utf8', function(err, data) {
+        var split = data.split(",")
+
+        command = split[0];
+        input[3] = split[1];
+        console.log(command);
+        console.log(input[3]);
+    });
+
+
+}
+
+
+//Perform the appropriate search based on which proc.argv command is passed
 
         if (command == "my-tweets") {
             getTweets();
@@ -98,7 +129,7 @@ var getMovie = function () {
         }
 
         else if (command == "do-what-it-says") {
-
+            thatWay();
         }
 
         else {
