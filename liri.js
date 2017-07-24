@@ -42,14 +42,15 @@ var getTweets = function() {
 
 //Create the function to get the songs
 var getSong = function () {
-    song = input[3];
+    var song = '"' + process.argv.slice(3).join(" ") + '"';
+
 
     if (!song){
         song = "The Sign";
     }
 
 //Is it possible to be more granular in the search here, and pass songs AND artists?  NPM instructions suggest
-    //either track, artist, OR title.  Just putting in the track name doesn't return Ace of Base info.
+    //either track, artist, OR title.  Just putting in the track name doesn't return Ace of Base track.
     spotify.search({type: 'track', query: song, limit: 1}, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
@@ -86,14 +87,14 @@ var getMovie = function () {
         request(options, function (err, res, body) {
             let json = JSON.parse(body);
             // console.log(json);
-            console.log("* " + json.Title);
-            console.log("* " + json.Year);
-            console.log("* " + json.imdbRating);
-            console.log("* " + json.Country);
-            console.log("* " + json.Language);
-            console.log("* " + json.Plot);
-            console.log("* " + json.Actors);
-            console.log("* " + json.tomatoURL);
+            console.log("* Title: " + json.Title);
+            console.log("* Year: " + json.Year);
+            console.log("* IMDB Rating: " + json.imdbRating);
+            console.log("* Country: " + json.Country);
+            console.log("* Language: " + json.Language);
+            console.log("* Plot: " + json.Plot);
+            console.log("* Actors: " + json.Actors);
+            console.log("* Rotten Tomatoes Link: " + json.tomatoURL);
         });
 
 };
@@ -106,12 +107,7 @@ var thatWay = function () {
 
         command = split[0];
         input[3] = split[1];
-        console.log(split[0]);
-        console.log(split[1]);
-        //Wasn't sure how to pass the indexes of this array as command line parameters for node from within this function
-        //so this was as far as I got.  Is that even something that is possible to do?
-        //I had some success changing up the spotify function to take in the input[3] parameter returned here,
-        //and then calling the getSong function, but the changes I made to it broke the regular behavior.
+        getSong();
     });
 
 }
