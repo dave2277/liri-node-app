@@ -7,7 +7,6 @@ var request = require('request');
 var fs = require('fs');
 
 
-
 //Provide authentication credentials for twitter
 var client = new Twitter({
     consumer_key: keys.twitterKeys.consumer_key,
@@ -26,7 +25,7 @@ var spotify = new Spotify({
 var input = process.argv;
 var command = input[2];
 
-//Create the function to get the tweets
+//Create the function to get the tweets.  Is there a way to display this in reverse order, e.g., oldest to newest?
 var getTweets = function() {
 
     var params = {screen_name: "DavidGray61", count: 20};
@@ -44,10 +43,13 @@ var getTweets = function() {
 //Create the function to get the songs
 var getSong = function () {
     song = input[3];
+
     if (!song){
         song = "The Sign";
     }
 
+//Is it possible to be more granular in the search here, and pass songs AND artists?  NPM instructions suggest
+    //either track, artist, OR title.  Just putting in the track name doesn't return Ace of Base info.
     spotify.search({type: 'track', query: song, limit: 1}, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
@@ -104,10 +106,13 @@ var thatWay = function () {
 
         command = split[0];
         input[3] = split[1];
-        console.log(command);
-        console.log(input[3]);
+        console.log(split[0]);
+        console.log(split[1]);
+        //Wasn't sure how to pass the indexes of this array as command line parameters for node from within this function
+        //so this was as far as I got.  Is that even something that is possible to do?
+        //I had some success changing up the spotify function to take in the input[3] parameter returned here,
+        //and then calling the getSong function, but the changes I made to it broke the regular behavior.
     });
-
 
 }
 
