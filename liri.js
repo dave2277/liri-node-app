@@ -42,26 +42,26 @@ var getTweets = function() {
 
 //Create the function to get the songs
 var getSong = function () {
-    var song = '"' + process.argv.slice(3).join(" ") + '"';
+    if (!input[3]) {
+            console.log("Artist(s) Name: Ace of Base");
+            console.log("Song Title: The Sign");
+            console.log("Preview URL: Why would you do that to yourself?");
+            console.log("Album: The Sign");
+    } else {
 
+        var song = '"' + process.argv.slice(3).join(" ") + '"';
 
-    if (!song){
-        song = "The Sign";
+        spotify.search({type: 'track', query: song, limit: 1}, function (err, data) {
+            if (err) {
+                return console.log('Error occurred: ' + err);
+            }
+
+            console.log("Artist(s) Name: " + data.tracks.items[0].album.artists[0].name);
+            console.log("Song Title: " + data.tracks.items[0].name);
+            console.log("Preview URL: " + data.tracks.items[0].preview_url);
+            console.log("Album: " + data.tracks.items[0].album.name);
+        });
     }
-
-//Is it possible to be more granular in the search here, and pass songs AND artists?  NPM instructions suggest
-    //either track, artist, OR title.  Just putting in the track name doesn't return Ace of Base track.
-    spotify.search({type: 'track', query: song, limit: 1}, function (err, data) {
-        if (err) {
-            return console.log('Error occurred: ' + err);
-        }
-
-        console.log("Artist(s) Name: " + data.tracks.items[0].album.artists[0].name);
-        console.log("Song Title: " + data.tracks.items[0].name);
-        console.log("Preview URL: " + data.tracks.items[0].preview_url);
-        console.log("Album: " + data.tracks.items[0].album.name);
-    });
-
 };
 
 //Create function to get movies from the OMDB node application
@@ -83,7 +83,6 @@ var getMovie = function () {
         };
 
     }
-
         request(options, function (err, res, body) {
             let json = JSON.parse(body);
             // console.log(json);
@@ -114,7 +113,6 @@ var thatWay = function () {
 
 
 //Perform the appropriate search based on which proc.argv command is passed
-
         if (command == "my-tweets") {
             getTweets();
         }
